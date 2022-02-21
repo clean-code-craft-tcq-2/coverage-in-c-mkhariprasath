@@ -1,10 +1,6 @@
 #include "typewise-alert.h"
 #include <stdio.h>
 
-#if (WORKING_ENV == TEST_ENV)
-int  printCounter = 0;
-#endif
-
 int (*printerFp[]) (const char* recepient) = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
 void (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
 
@@ -21,8 +17,7 @@ BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
 BreachType classifyTemperatureBreach(CoolingType coolingType, double temperatureInC) 
 {
   CoolingTypeLimit_t limitCoolingType =  coolingType();
-  BreachType ret;
-  ret = inferBreach(temperatureInC, limitCoolingType.lowLimit, limitCoolingType.highLimit);
+  BreachType ret = inferBreach(temperatureInC, limitCoolingType.lowLimit, limitCoolingType.highLimit);
   return ret;
 }
 
@@ -53,34 +48,19 @@ int fpAlertTempLow(const char* recepient)
 {
   printf("To: %s\n", recepient);
   printf("Hi, the temperature is too low\n");
-  #if (WORKING_ENV == TEST_ENV)
-  int  printCounter++;
-  return printCounter; // to assert
-  #else 
   return 0;
-  #endif
 }
 int fpAlertTempHigh(const char* recepient)
 {
   printf("To: %s\n", recepient);
   printf("Hi, the temperature is too high\n");
-  #if (WORKING_ENV == TEST_ENV)
-  int  printCounter++;
-  return printCounter; // to assert
-  #else 
   return 0;
-  #endif
 }
 int fpAlertNormal(const char* recepient)
 {
   // printf("To: %s\n", recepient);
   // printf("Hi, the temperature is normal\n");
-  #if (WORKING_ENV == TEST_ENV)
-  int  printCounter++;
-  return printCounter;
-  #else 
   return 0;
-  #endif
 }
 
 CoolingTypeLimit_t PASSIVE_COOLING()
