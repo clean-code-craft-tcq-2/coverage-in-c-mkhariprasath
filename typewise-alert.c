@@ -6,7 +6,7 @@ int  printCounter = 0;
 #endif
 
 int (*printerFp[]) (const char* recepient) = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
-int (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
+void (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
 
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
@@ -72,13 +72,13 @@ int fpAlertTempHigh(const char* recepient)
 int fpAlertNormal(const char* recepient)
 {
   // printf("To: %s\n", recepient);
-  // printf("Hi, the temperature is too high\n");
-  // #if (WORKING_ENV == TEST_ENV)
-  // int  printCounter++;
-  // return printCounter;
-  // #else 
-  // return 0;
-  // #endif
+  // printf("Hi, the temperature is normal\n");
+  #if (WORKING_ENV == TEST_ENV)
+  int  printCounter++;
+  return printCounter;
+  #else 
+  return 0;
+  #endif
 }
 
 CoolingTypeLimit_t PASSIVE_COOLING()
