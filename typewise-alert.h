@@ -30,6 +30,7 @@ void checkAndAlert(
 void sendToController(BreachType breachType);
 void sendToEmail(BreachType breachType);
 
+typedef CoolingTypeLimit_t (*CoolingType)();
 CoolingTypeLimit_t PASSIVE_COOLING();
 CoolingTypeLimit_t HI_ACTIVE_COOLING();
 CoolingTypeLimit_t MED_ACTIVE_COOLING();
