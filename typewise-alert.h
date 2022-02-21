@@ -52,6 +52,5 @@ int fpAlertTempHigh(const char* recepient);
 int printEmailContents();
 
 
-int (*printerFp[]) () = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
-int (*alerterFp[]) () = {sendToController, sendToEmail};
+
 
