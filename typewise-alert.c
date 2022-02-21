@@ -5,8 +5,8 @@
 int  printCounter = 0;
 #endif
 
-int (*printerFp[]) () = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
-int (*alerterFp[]) () = {sendToController, sendToEmail};
+int (*printerFp[]) (const char* recepient) = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
+int (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
 
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
