@@ -1,10 +1,9 @@
 #pragma once
 
-typedef enum {
-  PASSIVE_COOLING,
-  HI_ACTIVE_COOLING,
-  MED_ACTIVE_COOLING
-} CoolingType;
+typedef struct {
+  double lowLimit;
+  double highLimit; 
+}CoolingTypeLimit_t;
 
 typedef enum {
   NORMAL,
@@ -30,3 +29,8 @@ void checkAndAlert(
 
 void sendToController(BreachType breachType);
 void sendToEmail(BreachType breachType);
+
+CoolingTypeLimit_t PASSIVE_COOLING();
+CoolingTypeLimit_t HI_ACTIVE_COOLING();
+CoolingTypeLimit_t MED_ACTIVE_COOLING();
+CoolingTypeLimit_t setRangeWRTCoolingType(float, float);
