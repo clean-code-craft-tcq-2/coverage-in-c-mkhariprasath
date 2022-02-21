@@ -49,7 +49,7 @@ CoolingTypeLimit_t setRangeWRTCoolingType(float, float);
 int fpAlertNormal(const char* recepient);
 int fpAlertTempLow(const char* recepient);
 int fpAlertTempHigh(const char* recepient);
-int printEmailContents();
+int printEmailContents(BreachType breachType);
 
 
 
