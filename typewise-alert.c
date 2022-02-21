@@ -1,6 +1,10 @@
 #include "typewise-alert.h"
 #include <stdio.h>
 
+#if (WORKING_ENV == TEST_ENV)
+int  printCounter = 0;
+#endif
+
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
     return TOO_LOW;
@@ -17,21 +21,11 @@ BreachType classifyTemperatureBreach(CoolingType coolingType, double temperature
   return inferBreach(temperatureInC, limitCoolingType.lowLimit, limitCoolingType.highLimit);
 }
 
-void checkAndAlert(
-    AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) {
-
-  BreachType breachType = classifyTemperatureBreach(
-    batteryChar.coolingType, temperatureInC
-  );
-
-  switch(alertTarget) {
-    case TO_CONTROLLER:
-      sendToController(breachType);
-      break;
-    case TO_EMAIL:
-      sendToEmail(breachType);
-      break;
-  }
+void checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) 
+{
+  BreachType breachType = classifyTemperatureBreach(batteryChar.coolingType, temperatureInC);
+  int arrPtr = (int)alertTarget;
+  alerterFp[arrPtr](breachType);
 }
 
 void sendToController(BreachType breachType) {
@@ -40,19 +34,48 @@ void sendToController(BreachType breachType) {
 }
 
 void sendToEmail(BreachType breachType) {
+  (void)printEmailContents(breachType);
+}
+
+int printEmailContents(BreachType breachType)
+{
+  int arrPtr = (int)breachType;
   const char* recepient = "a.b@c.com";
-  switch(breachType) {
-    case TOO_LOW:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too low\n");
-      break;
-    case TOO_HIGH:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too high\n");
-      break;
-    case NORMAL:
-      break;
-  }
+  return printerFp[arrPtr](recepient);
+}
+
+int fpAlertTempLow(const char* recepient)
+{
+  printf("To: %s\n", recepient);
+  printf("Hi, the temperature is too low\n");
+  #if (WORKING_ENV == TEST_ENV)
+  int  printCounter++;
+  return printCounter; // to assert
+  #else 
+  return 0;
+  #endif
+}
+int fpAlertTempHigh(const char* recepient)
+{
+  printf("To: %s\n", recepient);
+  printf("Hi, the temperature is too high\n");
+  #if (WORKING_ENV == TEST_ENV)
+  int  printCounter++;
+  return printCounter; // to assert
+  #else 
+  return 0;
+  #endif
+}
+int fpAlertNormal(const char* recepient)
+{
+  // printf("To: %s\n", recepient);
+  // printf("Hi, the temperature is too high\n");
+  // #if (WORKING_ENV == TEST_ENV)
+  // int  printCounter++;
+  // return printCounter;
+  // #else 
+  // return 0;
+  // #endif
 }
 
 CoolingTypeLimit_t PASSIVE_COOLING()
