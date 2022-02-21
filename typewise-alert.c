@@ -5,6 +5,9 @@
 int  printCounter = 0;
 #endif
 
+int (*printerFp[]) () = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
+int (*alerterFp[]) () = {sendToController, sendToEmail};
+
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
     return TOO_LOW;
