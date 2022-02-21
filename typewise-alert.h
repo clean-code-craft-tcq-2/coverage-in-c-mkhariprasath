@@ -1,15 +1,5 @@
 #pragma once
 
-#define TEST_ENV    0
-#define PROD_ENV    1
-
-#ifndef WORKING_ENV
-#define WORKING_ENV PROD_ENV //default is production environment
-#endif
-
-extern int  printCounter; //to use in the testing environment to assert on print functionality
-
-
 typedef struct {
   double lowLimit;
   double highLimit; 
