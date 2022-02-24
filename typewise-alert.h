@@ -22,7 +22,6 @@ typedef enum {
 
 typedef struct {
   CoolingType coolingType;
-  char brand[48];
 } BatteryCharacter;
 
 void checkAndAlert(
