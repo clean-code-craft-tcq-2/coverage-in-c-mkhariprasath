@@ -25,16 +25,19 @@ void checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double
 {
   BreachType breachType = classifyTemperatureBreach(batteryChar.coolingType, temperatureInC);
   int arrPtr = (int)alertTarget;
-  alerterFp[arrPtr](breachType);
+  return (alerterFp[arrPtr](breachType));
+
 }
 
 void sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
   printf("%x : %x\n", header, breachType);
+	return OK;
 }
 
 void sendToEmail(BreachType breachType) {
   (void)printEmailContents(breachType);
+	return OK;
 }
 
 int printEmailContents(BreachType breachType)
