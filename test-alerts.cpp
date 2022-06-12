@@ -35,45 +35,45 @@ TEST_CASE("Classification of Temperature Breach") {
   REQUIRE((classifyTemperatureBreach(MED_ACTIVE_COOLING,41) == TOO_HIGH));
 }
 
-TEST_CASE("checkAndAlert function") {
+TEST_CASE("REQUIRE(checkAndAlert function") {
 
   BatteryCharacter batteryCharacter;
 
   batteryCharacter.coolingType = PASSIVE_COOLING;
-  checkAndAlert(TO_EMAIL,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,10); //normal
-  checkAndAlert(TO_EMAIL,batteryCharacter,35); //normal high boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,-1); // low check
-  checkAndAlert(TO_EMAIL,batteryCharacter,36); // hign check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,10); //normal
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,35); //normal high boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,-1); // low check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,36); // hign check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter, 0) == OK); //normal low boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,35) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,36) == OK);  // hign check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter, 0) == OK);  //normal low boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,35) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,36) == OK);  // hign check
 
   batteryCharacter.coolingType = HI_ACTIVE_COOLING;
 
-  checkAndAlert(TO_EMAIL,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,10); //normal
-  checkAndAlert(TO_EMAIL,batteryCharacter,45); //normal high boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,-1); // low check
-  checkAndAlert(TO_EMAIL,batteryCharacter,46); // hign check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,10); //normal
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,45); //normal high boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,-1); // low check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,46); // hign check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter, 0) == OK);  //normal low boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,45) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,46) == OK);  // hign check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter, 0) == OK);  //normal low boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,45) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,46) == OK);  // hign check
  
   batteryCharacter.coolingType = MED_ACTIVE_COOLING;
 
-  checkAndAlert(TO_EMAIL,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,10); //normal
-  checkAndAlert(TO_EMAIL,batteryCharacter,40); //normal high boundary
-  checkAndAlert(TO_EMAIL,batteryCharacter,-1); // low check
-  checkAndAlert(TO_EMAIL,batteryCharacter,41); // hign check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter, 0); //normal low boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,10); //normal
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,40); //normal high boundary
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,-1); // low check
-  checkAndAlert(TO_CONTROLLER,batteryCharacter,41); // hign check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter, 0) == OK);  //normal low boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,40) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_EMAIL,batteryCharacter,41) == OK);  // hign check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter, 0) == OK);  //normal low boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,10) == OK);  //normal
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,40) == OK);  //normal high boundary
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,-1) == OK);  // low check
+  REQUIRE(checkAndAlert(TO_CONTROLLER,batteryCharacter,41) == OK);  // hign check
 }
