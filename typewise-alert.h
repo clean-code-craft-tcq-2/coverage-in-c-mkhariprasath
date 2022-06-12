@@ -27,11 +27,10 @@ typedef struct {
   CoolingType coolingType;
 } BatteryCharacter;
 
-void checkAndAlert(
-  AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC);
+void checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC);
 
-void sendToController(BreachType breachType);
-void sendToEmail(BreachType breachType);
+int sendToController(BreachType breachType);
+int sendToEmail(BreachType breachType);
 
 CoolingTypeLimit_t PASSIVE_COOLING();
 CoolingTypeLimit_t HI_ACTIVE_COOLING();
