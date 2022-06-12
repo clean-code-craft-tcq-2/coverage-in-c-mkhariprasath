@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 int (*printerFp[]) (const char* recepient) = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
-void (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
+int (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
 
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
@@ -21,7 +21,7 @@ BreachType classifyTemperatureBreach(CoolingType coolingType, double temperature
   return ret;
 }
 
-void checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) 
+int checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) 
 {
   BreachType breachType = classifyTemperatureBreach(batteryChar.coolingType, temperatureInC);
   int arrPtr = (int)alertTarget;
@@ -29,13 +29,13 @@ void checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double
 
 }
 
-void sendToController(BreachType breachType) {
+int sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
   printf("%x : %x\n", header, breachType);
 	return OK;
 }
 
-void sendToEmail(BreachType breachType) {
+int sendToEmail(BreachType breachType) {
   (void)printEmailContents(breachType);
 	return OK;
 }
