@@ -1,6 +1,9 @@
 #include "typewise-alert.h"
 #include <stdio.h>
 
+int (*printerFp[]) (const char* recepient) = {fpAlertNormal, fpAlertTempLow, fpAlertTempHigh};
+int (*alerterFp[]) (BreachType breachType) = {sendToController, sendToEmail};
+
 BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   if(value < lowerLimit) {
     return TOO_LOW;
@@ -11,61 +14,77 @@ BreachType inferBreach(double value, double lowerLimit, double upperLimit) {
   return NORMAL;
 }
 
-BreachType classifyTemperatureBreach(
-    CoolingType coolingType, double temperatureInC) {
-  int lowerLimit = 0;
-  int upperLimit = 0;
-  switch(coolingType) {
-    case PASSIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 35;
-      break;
-    case HI_ACTIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 45;
-      break;
-    case MED_ACTIVE_COOLING:
-      lowerLimit = 0;
-      upperLimit = 40;
-      break;
-  }
-  return inferBreach(temperatureInC, lowerLimit, upperLimit);
+BreachType classifyTemperatureBreach(CoolingType coolingType, double temperatureInC) 
+{
+  CoolingTypeLimit_t limitCoolingType =  coolingType();
+  BreachType ret = inferBreach(temperatureInC, limitCoolingType.lowLimit, limitCoolingType.highLimit);
+  return ret;
 }
 
-void checkAndAlert(
-    AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) {
+int checkAndAlert(AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) 
+{
+  BreachType breachType = classifyTemperatureBreach(batteryChar.coolingType, temperatureInC);
+  int arrPtr = (int)alertTarget;
+  return (alerterFp[arrPtr](breachType));
 
-  BreachType breachType = classifyTemperatureBreach(
-    batteryChar.coolingType, temperatureInC
-  );
-
-  switch(alertTarget) {
-    case TO_CONTROLLER:
-      sendToController(breachType);
-      break;
-    case TO_EMAIL:
-      sendToEmail(breachType);
-      break;
-  }
 }
 
-void sendToController(BreachType breachType) {
+int sendToController(BreachType breachType) {
   const unsigned short header = 0xfeed;
   printf("%x : %x\n", header, breachType);
+	return OK;
 }
 
-void sendToEmail(BreachType breachType) {
+int sendToEmail(BreachType breachType) {
+  (void)printEmailContents(breachType);
+	return OK;
+}
+
+int printEmailContents(BreachType breachType)
+{
+  int arrPtr = (int)breachType;
   const char* recepient = "a.b@c.com";
-  switch(breachType) {
-    case TOO_LOW:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too low\n");
-      break;
-    case TOO_HIGH:
-      printf("To: %s\n", recepient);
-      printf("Hi, the temperature is too high\n");
-      break;
-    case NORMAL:
-      break;
-  }
+  return printerFp[arrPtr](recepient);
+}
+
+int fpAlertTempLow(const char* recepient)
+{
+  printf("To: %s\n", recepient);
+  printf("Hi, the temperature is too low\n");
+  return 0;
+}
+int fpAlertTempHigh(const char* recepient)
+{
+  printf("To: %s\n", recepient);
+  printf("Hi, the temperature is too high\n");
+  return 0;
+}
+int fpAlertNormal(const char* recepient)
+{
+  // printf("To: %s\n", recepient);
+  // printf("Hi, the temperature is normal\n");
+  return 0;
+}
+
+CoolingTypeLimit_t PASSIVE_COOLING()
+{
+	return setRangeWRTCoolingType(0,35);
+}
+
+CoolingTypeLimit_t HI_ACTIVE_COOLING()
+{
+	return setRangeWRTCoolingType(0,45);
+}
+
+CoolingTypeLimit_t MED_ACTIVE_COOLING()
+{
+	return setRangeWRTCoolingType(0,40);
+}
+
+CoolingTypeLimit_t setRangeWRTCoolingType(float low, float high)
+{
+	CoolingTypeLimit_t limit;
+	limit.lowLimit = low;
+	limit.highLimit = high;
+	return limit;
 }
