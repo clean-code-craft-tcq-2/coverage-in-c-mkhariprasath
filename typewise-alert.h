@@ -1,5 +1,8 @@
 #pragma once
 
+#define OK 1
+#define NOK 0
+
 typedef struct {
   double lowLimit;
   double highLimit; 
